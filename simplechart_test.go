@@ -6,7 +6,7 @@ import (
 
 const (
    chartWidth = 1024
-   font = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+   font = "" // use default font
 )
 
 func TestPieMap(t *testing.T) {
