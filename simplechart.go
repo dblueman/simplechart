@@ -94,7 +94,7 @@ func (sc *SimpleChart) BarSlice(fname string, data []int) error {
    return graph.Render(renderers.NewGoChart(renderers.PDF()), f)
 }
 
-func (sc *SimpleChart) BarMap(fname string, data map[int]int) error {
+func (sc *SimpleChart) BarMap(fname string, data map[int]int, date bool) error {
    keys := make([]int, 0, len(data))
    for k := range data {
       keys = append(keys, k)
@@ -104,8 +104,15 @@ func (sc *SimpleChart) BarMap(fname string, data map[int]int) error {
    var values []chart.Value
 
    for _, key := range keys {
-      label := time.Unix(int64(key)*60*60*24, 0).Format("Mon 02/01")
-      values = append(values, chart.Value{Value: float64(data[key]), Label: label})
+      value := chart.Value{Value: float64(data[key])}
+
+      if date {
+         value.Label = time.Unix(int64(key)*60*60*24, 0).Format("Mon 02/01")
+      } else {
+         value.Label = strconv.Itoa(key)
+      }
+
+      values = append(values, value)
    }
 
    graph := chart.BarChart{

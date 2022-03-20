@@ -45,7 +45,7 @@ func TestBarMap(t *testing.T) {
 
    data := map[int]int{1: 10, 2: 5, 3: 15}
 
-   err = sc.BarMap("barmap.pdf", data)
+   err = sc.BarMap("barmap.pdf", data, true)
    if err != nil {
       t.Error(err)
    }
