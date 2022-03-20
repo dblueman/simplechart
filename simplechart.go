@@ -33,7 +33,7 @@ func NewSimpleChart(width int, fontName string) (*SimpleChart, error) {
    return &sc, nil
 }
 
-func (sc *SimpleChart) PieMap(fname string, data map[string]int) {
+func (sc *SimpleChart) PieMap(fname string, data map[string]int) error {
    var values []chart.Value
 
    for k, v := range data {
@@ -50,14 +50,15 @@ func (sc *SimpleChart) PieMap(fname string, data map[string]int) {
 
    f, err := os.Create(fname)
    if err != nil {
-      panic(err)
+      return err
    }
    defer f.Close()
 
    graph.Render(renderers.NewGoChart(renderers.PDF()), f)
+   return nil
 }
 
-func (sc *SimpleChart) BarSlice(fname string, data []int) {
+func (sc *SimpleChart) BarSlice(fname string, data []int) error {
    var values []chart.Value
 
    for i, v := range data {
@@ -89,14 +90,15 @@ func (sc *SimpleChart) BarSlice(fname string, data []int) {
 
    f, err := os.Create(fname)
    if err != nil {
-      panic(err)
+      return err
    }
    defer f.Close()
 
    graph.Render(renderers.NewGoChart(renderers.PDF()), f)
+   return nil
 }
 
-func (sc *SimpleChart) BarMap(fname string, data map[int]int) {
+func (sc *SimpleChart) BarMap(fname string, data map[int]int) error {
    keys := make([]int, 0, len(data))
    for k := range data {
       keys = append(keys, k)
@@ -130,9 +132,10 @@ func (sc *SimpleChart) BarMap(fname string, data map[int]int) {
 
    f, err := os.Create(fname)
    if err != nil {
-      panic(err)
+      return err
    }
    defer f.Close()
 
    graph.Render(renderers.NewGoChart(renderers.PDF()), f)
+   return nil
 }
