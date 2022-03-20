@@ -54,18 +54,13 @@ func (sc *SimpleChart) PieMap(fname string, data map[string]int) error {
    }
    defer f.Close()
 
-   graph.Render(renderers.NewGoChart(renderers.PDF()), f)
-   return nil
+   return graph.Render(renderers.NewGoChart(renderers.PDF()), f)
 }
 
 func (sc *SimpleChart) BarSlice(fname string, data []int) error {
    var values []chart.Value
 
    for i, v := range data {
-      if i < 6 {
-         continue
-      }
-
       label := strconv.Itoa(i)
       values = append(values, chart.Value{Value: float64(v), Label: label})
    }
@@ -94,8 +89,7 @@ func (sc *SimpleChart) BarSlice(fname string, data []int) error {
    }
    defer f.Close()
 
-   graph.Render(renderers.NewGoChart(renderers.PDF()), f)
-   return nil
+   return graph.Render(renderers.NewGoChart(renderers.PDF()), f)
 }
 
 func (sc *SimpleChart) BarMap(fname string, data map[int]int) error {
@@ -136,6 +130,5 @@ func (sc *SimpleChart) BarMap(fname string, data map[int]int) error {
    }
    defer f.Close()
 
-   graph.Render(renderers.NewGoChart(renderers.PDF()), f)
-   return nil
+   return graph.Render(renderers.NewGoChart(renderers.PDF()), f)
 }
