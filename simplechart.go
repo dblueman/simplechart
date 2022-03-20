@@ -20,14 +20,16 @@ type SimpleChart struct {
 func NewSimpleChart(width int, fontName string) (*SimpleChart, error) {
    sc := SimpleChart{width: width}
 
-   fontData, err := os.ReadFile(fontName)
-   if err != nil {
-      return nil, err
-   }
+   if fontName != "" {
+      fontData, err := os.ReadFile(fontName)
+      if err != nil {
+         return nil, err
+      }
 
-   sc.font, err = truetype.Parse(fontData)
-   if err != nil {
-      panic(err)
+      sc.font, err = truetype.Parse(fontData)
+      if err != nil {
+         return nil, err
+      }
    }
 
    return &sc, nil
