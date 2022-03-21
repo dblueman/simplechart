@@ -17,6 +17,10 @@ type SimpleChart struct {
    font *truetype.Font
 }
 
+type XYValue struct {
+   X, Y float64
+}
+
 func NewSimpleChart(width int, fontName string) (*SimpleChart, error) {
    sc := SimpleChart{width: width}
 
@@ -131,6 +135,27 @@ func (sc *SimpleChart) BarMap(fname string, data map[int]int, date bool) error {
       Height: sc.width/2,
       BarWidth: sc.width / (len(values)+6),
       Bars: values,
+   }
+
+   f, err := os.Create(fname)
+   if err != nil {
+      return err
+   }
+   defer f.Close()
+
+   return graph.Render(renderers.NewGoChart(renderers.PDF()), f)
+}
+
+func (sc *SimpleChart) Line(fname string, data []XYValue) error {
+   series := chart.ContinuousSeries{}
+
+   for _, d := range data {
+      series.XValues = append(series.XValues, d.X)
+      series.YValues = append(series.YValues, d.Y)
+   }
+
+   graph := chart.Chart{
+      Series: []chart.Series{series},
    }
 
    f, err := os.Create(fname)
