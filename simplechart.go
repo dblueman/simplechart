@@ -146,16 +146,25 @@ func (sc *SimpleChart) BarMap(fname string, data map[int]int, date bool) error {
    return graph.Render(renderers.NewGoChart(renderers.PDF()), f)
 }
 
-func (sc *SimpleChart) Line(fname string, data []XYValue) error {
-   series := chart.ContinuousSeries{}
-
-   for _, d := range data {
-      series.XValues = append(series.XValues, d.X)
-      series.YValues = append(series.YValues, d.Y)
+func (sc *SimpleChart) Line(fname string, xlabel string, ylabel string, datas [][]XYValue) error {
+   graph := chart.Chart{
+      XAxis: chart.XAxis{
+			Name: xlabel,
+		},
+      YAxis: chart.YAxis{
+			Name: ylabel,
+		},
    }
 
-   graph := chart.Chart{
-      Series: []chart.Series{series},
+   for _, data := range datas {
+      series := chart.ContinuousSeries{}
+
+      for _, d := range data {
+         series.XValues = append(series.XValues, d.X)
+         series.YValues = append(series.YValues, d.Y)
+      }
+
+      graph.Series = append(graph.Series, series)
    }
 
    f, err := os.Create(fname)
